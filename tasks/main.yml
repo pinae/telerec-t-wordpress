@@ -13,6 +13,12 @@
       autoheal: true
       skip_network_definition: false
 
+- name: "Change ownership to maria:maria inside the container (UID 999, GID 999)"
+  ansible.builtin.file:
+    path: '{{ service_cfg.directory }}/maria'
+    owner: 999
+    group: 999
+
 - name: "Copy {{ service_cfg.name }} nginx.conf"
   template:
     src: nginx.conf.j2
