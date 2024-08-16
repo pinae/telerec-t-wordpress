@@ -1,6 +1,6 @@
 - ansible.builtin.import_role:
     name: compose_hull
-    tasks_from: facts
+    tasks_from: prepare
   vars:
     service_defaults:
       directory: "{{ docker_dir }}/wordpress"
@@ -12,10 +12,6 @@
       watchtower: true
       autoheal: true
       skip_network_definition: false
-
-- ansible.builtin.import_role:
-    name: compose_hull
-    tasks_from: create_directories
 
 - name: "Copy {{ service_cfg.name }} nginx.conf"
   template:
