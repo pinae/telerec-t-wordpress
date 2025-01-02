@@ -12,12 +12,22 @@
       watchtower: true
       autoheal: true
       skip_network_definition: false
+      healthcheck:
+        cmd: "curl -s http://127.0.0.1/index.php | grep -o 'id=\\\"page\\\"'"
 
 - name: "Change ownership to maria:maria inside the container (UID 999, GID 999)"
   ansible.builtin.file:
     path: '{{ service_cfg.directory }}/maria'
     owner: 999
     group: 999
+
+- name: "Copy {{ service_cfg.name }} healthcheck.cnf"
+  template:
+    src: healthcheck.cnf.j2
+    dest: '{{ service_cfg.directory }}/maria/healthcheck.cnf'
+    owner: 999
+    group: 999
+  tags: [ always ]
 
 - name: "Copy {{ service_cfg.name }} nginx.conf"
   template:
